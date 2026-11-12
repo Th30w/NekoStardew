@@ -1,0 +1,46 @@
+[plugin]
+id = "stardew_companion"
+name = "星露谷猫娘"
+description = "让猫娘在自己的星露谷存档里自主经营农场，把实时状态与现实画面带进对话。"
+short_description = "Stardew Valley autonomous farm companion with live monitoring."
+keywords = ["stardew", "game", "autonomous", "farm", "companion"]
+version = "0.2.0"
+entry = "plugin.plugins.stardew_companion:StardewCompanionPlugin"
+
+[plugin.author]
+name = "JT"
+
+[plugin.sdk]
+recommended = ">=0.1.0,<0.2.0"
+supported = ">=0.1.0,<0.3.0"
+
+[plugin.i18n]
+default_locale = "zh-CN"
+locales_dir = "i18n"
+
+[plugin_runtime]
+enabled = true
+auto_start = true
+
+[plugin.store]
+enabled = true
+
+[stardew]
+# stardew-agent 的 WebSocket 地址。改端口时这里和 agent 侧要一起改。
+ws_url = "ws://localhost:48921/neko"
+reconnect_interval_seconds = 5.0
+
+# 单次任务最长等待；农场日常动作常有 60-120s 的连续操作。
+task_timeout_seconds = 180.0
+
+# 主动陪伴的节奏：没有 pending 任务时，多久把最新状态推给对话模型一次。
+system_prompt_interval_seconds = 20.0
+skip_system_prompt_if_busy = true
+
+# 画面推流
+stream_screenshots_to_llm = true
+screenshot_stream_min_interval_seconds = 8.0
+screenshot_cache_size = 3
+screenshot_max_edge_px = 960
+screenshot_jpeg_quality = 78
+screenshot_max_bytes = 102400

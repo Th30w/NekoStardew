@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- 星露谷 1.6 的 mod 统一 target net6.0；往上抬会被 SMAPI 拒绝载入。 -->
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>NekoStardew</AssemblyName>
+    <RootNamespace>NekoStardew</RootNamespace>
+    <Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+    <!-- 共享内存传帧要把像素直接写进映射指针，省掉逐像素的托管写入开销。 -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- 游戏安装目录。装在别的盘时用 -p:GamePath="..." 覆盖。 -->
+    <GamePath Condition="'$(GamePath)' == ''">D:\SteamLibrary\steamapps\common\Stardew Valley</GamePath>
+  </PropertyGroup>
+
+  <!-- 这三个 DLL 必须来自游戏目录本身：SMAPI 在运行时提供同一份类型，
+       用 NuGet 包编译会和游戏内运行时类型不一致，导致载入时不匹配。 -->
+  <ItemGroup>
+    <Reference Include="Stardew Valley">
+      <HintPath>$(GamePath)\Stardew Valley.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>$(GamePath)\StardewModdingAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="xTile">
+      <HintPath>$(GamePath)\xTile.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(GamePath)\MonoGame.Framework.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- 1.6 把 Season、ObjectData、CropData 这些数据模型挪到了独立程序集，
+         判断"这季能不能种"要碰 Season，不引用就报 CS0012。 -->
+    <Reference Include="StardewValley.GameData">
+      <HintPath>$(GamePath)\StardewValley.GameData.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup></Project>

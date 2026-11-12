@@ -1,0 +1,38 @@
+# 构建产物
+bin/
+obj/
+_build/
+*.pdb
+*.user
+*.suo
+
+# 本地运行数据：日志、存档备份、抓帧落盘，都不该进仓库
+_pack/
+*.log
+frame.png
+
+# 编辑器 / 系统
+.vs/
+.idea/
+.vscode/
+Thumbs.db
+desktop.ini
+
+# 排查过程中留下的中间取证图，只在本地留着；仓库里只保留能证明"真的在跑"的那几张
+docs/dxgi-live.png
+docs/game-pw2.png
+docs/live-load.png
+docs/live-load2.png
+docs/live-playing.png
+docs/live-playing2.png
+docs/live-playing3.png
+docs/live-playing4.png
+docs/live-seq1.png
+docs/live-title.png
+docs/monitor-live.png
+docs/monitor-probe.png
+docs/probe-now.png
+docs/desk-now.png
+docs/desk-now2.png
+docs/live-day3.png
+monitor/_probe.png

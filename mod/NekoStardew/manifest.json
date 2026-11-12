@@ -1,0 +1,9 @@
+{
+  "Name": "Neko Stardew Companion",
+  "Author": "JT",
+  "Version": "1.0.0",
+  "Description": "把星露谷的真实农场状态交给 N.E.K.O 猫娘，并执行她派下来的农活动作。",
+  "UniqueID": "JT.NekoStardew",
+  "EntryDll": "NekoStardew.dll",
+  "MinimumApiVersion": "4.0.0"
+}
