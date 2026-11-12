@@ -1,0 +1,73 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 校验 plugin.toml 字段与 entry 一致性
+        shell: python
+        run: |
+          import pathlib, sys, tomllib
+
+          toml_path = pathlib.Path("stardew_companion/plugin.toml")
+          if not toml_path.is_file():
+              sys.exit(f"找不到 {toml_path}")
+          data = tomllib.loads(toml_path.read_text(encoding="utf-8"))
+          plugin = data.get("plugin") or {}
+
+          required = ("id", "name", "version", "entry", "description")
+          missing = [k for k in required if not plugin.get(k)]
+          if missing:
+              sys.exit(f"plugin.toml 缺字段: {', '.join(missing)}")
+
+          plugin_id = plugin["id"]
+          entry = plugin["entry"]
+          module_path, _, class_name = entry.partition(":")
+          if not class_name:
+              sys.exit(f"entry 格式应为 模块:类名，当前是 {entry!r}")
+
+          # entry 声明的模块路径最后一段必须和插件目录同名，
+          # 否则市场把目录挂成 plugin.plugins.<目录名> 之后导入会失败。
+          if module_path.rsplit(".", 1)[-1] != plugin_id:
+              sys.exit(
+                  f"entry 模块路径 {module_path!r} 与插件 id {plugin_id!r} 不一致"
+              )
+
+          match = pathlib.Path("stardew_companion/__init__.py").read_text(encoding="utf-8")
+          if f"class {class_name}" not in match:
+              sys.exit(f"stardew_companion/__init__.py 里找不到 class {class_name}")
+
+          print(f"plugin.toml OK: id={plugin_id} version={plugin['version']} entry={entry}")
+          print(f"entry 类已确认: class {class_name}")
+
+      - name: Python 语法检查
+        run: python -m compileall -q stardew_companion && echo "语法检查通过"
+
+      - name: 版本号与 tag 一致性
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: python
+        run: |
+          import os, pathlib, sys, tomllib
+
+          tag = os.environ["GITHUB_REF_NAME"]
+          version = tomllib.loads(
+              pathlib.Path("stardew_companion/plugin.toml").read_text(encoding="utf-8")
+          )["plugin"]["version"]
+          if tag != f"v{version}":
+              sys.exit(f"tag {tag} 与 plugin.toml version {version} 不一致")
+          print(f"版本一致: {tag}")
