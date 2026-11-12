@@ -4,7 +4,7 @@ name = "星露谷猫娘"
 description = "让猫娘在自己的星露谷存档里自主经营农场，把实时状态与现实画面带进对话。"
 short_description = "Stardew Valley autonomous farm companion with live monitoring."
 keywords = ["stardew", "game", "autonomous", "farm", "companion"]
-version = "0.2.0"
+version = "0.2.1"
 entry = "plugin.plugins.stardew_companion:StardewCompanionPlugin"
 
 [plugin.author]
