@@ -12,7 +12,6 @@ from typing import Any, Deque, Dict, List, Optional
 from . import prompts
 from .client import StardewClient
 
-
 SEASON_ZH = {
     "spring": "春", "summer": "夏", "fall": "秋", "winter": "冬",
 }
