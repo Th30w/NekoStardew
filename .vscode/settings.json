@@ -1,0 +1,7 @@
+{
+  "nekoPlugin.repoRoot": ".",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/stardew_companion",
+    "${workspaceFolder}/stardew_companion/vendor"
+  ]
+}

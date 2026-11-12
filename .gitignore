@@ -14,9 +14,20 @@ frame.png
 # 编辑器 / 系统
 .vs/
 .idea/
-.vscode/
 Thumbs.db
 desktop.ini
+
+# Python 运行痕迹
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+vendor/
+store.db
+.env
 
 # 排查过程中留下的中间取证图，只在本地留着；仓库里只保留能证明"真的在跑"的那几张
 docs/dxgi-live.png
